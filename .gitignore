@@ -3,3 +3,6 @@
 /deps/deps.jl
 /deps/src/libqdel/libqdel.dylib
 /deps/libQuasiDefinite.dylib
+/deps/libQuasiDefinite.so
+/deps/say_hello.o
+/deps/usr/
