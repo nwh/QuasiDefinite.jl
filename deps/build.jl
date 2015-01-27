@@ -4,8 +4,6 @@ using BinDeps
 
 libQuasiDefinite = library_dependency("libQuasiDefinite")
 
-libdir = joinpath(Pkg.dir(),"QuasiDefinite","deps")
-
 provides(SimpleBuild,
          (@build_steps begin
              `make`
