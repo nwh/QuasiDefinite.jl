@@ -14,3 +14,11 @@ julia> Pkg.build("QuasiDefinite")
 ```julia
 julia> using QuasiDefinite
 ```
+
+## Current output
+
+```julia
+julia> using QuasiDefinite
+Hello from QuasiDefinite julia code.
+hello from QuasiDefinite c code.
+```
