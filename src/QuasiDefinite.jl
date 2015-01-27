@@ -7,6 +7,6 @@ include("../deps/deps.jl")
 
 println("Hello from QuasiDefinite julia code.")
 
-ccall((:say_hello,libqdel),Void,())
+ccall((:say_hello,libQuasiDefinite),Void,())
 
 end # module

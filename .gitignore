@@ -2,3 +2,4 @@
 *.jl.mem
 /deps/deps.jl
 /deps/src/libqdel/libqdel.dylib
+/deps/libQuasiDefinite.dylib
