@@ -16,4 +16,4 @@ provides(SimpleBuild,
          end),
          libqdel)
 
-@BinDeps.install [:libqdel => :libqdel]
+@BinDeps.install Dict(:libqdel => :libqdel)

@@ -1,5 +1,5 @@
 #include <stdio.h>
 
 void say_hello() {
-  printf("hi nick.\n");
+  printf("hello from QuasiDefinite c code.\n");
 }

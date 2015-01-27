@@ -5,6 +5,8 @@ module QuasiDefinite
 # load the libqdel
 include("../deps/deps.jl")
 
-show("Hello from QuasiDefinite.")
+println("Hello from QuasiDefinite julia code.")
+
+ccall((:say_hello,libqdel),Void,())
 
 end # module
