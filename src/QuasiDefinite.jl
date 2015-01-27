@@ -2,7 +2,7 @@ module QuasiDefinite
 
 # package code goes here
 
-# load the libqdel
+# load the libQuasiDefinite
 include("../deps/deps.jl")
 
 println("Hello from QuasiDefinite julia code.")
