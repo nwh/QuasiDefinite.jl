@@ -27,7 +27,7 @@ ifeq ($(OS), Darwin)
   FFLAGS := -fPIC
   # linker
   LD := clang
-  LDFLAGS :=
+  LDFLAGS := -framework Accelerate
 else ifeq ($(OS), Linux)
   # c compiler
   CC := gcc
@@ -62,7 +62,7 @@ FOBJ := $(patsubst %.f,%.o,$(filter %.f,$(FSRC)))
 	$(FC) $(FFLAGS) -c $< -o $@
 
 $(LIBNAME).$(SHLIB_EXT): $(COBJ) $(FOBJ)
-	$(LD) -shared $^ -o $@
+	$(LD) $(LDFLAGS) -shared $^ -o $@
 
 .PHONY: install
 install: $(LIBNAME).$(SHLIB_EXT)
