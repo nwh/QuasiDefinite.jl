@@ -34,7 +34,7 @@ else ifeq ($(OS), Linux)
   CFLAGS := -fPIC
   # fortran compiler
   FC := gfortran
-  FFLAGS := -fPIC
+  FFLAGS := -O2 -Wall -m64 -fdefault-integer-8 -fPIC
   # linker
   LD := gcc
   LDFLAGS :=
@@ -72,6 +72,7 @@ $(LIBNAME).a: $(COBJ) $(FOBJ)
 # rename symbols
 $(LIBNAME).a.renamed: $(LIBNAME).a
 	objcopy --redefine-syms objcopy.def $< $@
+	ranlib $@
 
 # rule to create shared object
 $(LIBNAME).$(SHLIB_EXT): $(LIBNAME).a.renamed
