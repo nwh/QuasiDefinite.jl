@@ -75,3 +75,25 @@ With: =make SYMBOLSUFFIX=64_ INTERFACE64=1=
 #+BEGIN_EXAMPLE
 gfortran -O2 -Wall -m64 -fdefault-integer-8 -fPIC -c sgbbrd.f -o sgbbrd.o
 #+END_EXAMPLE
+
+* OpenBLAS, creation of archive
+
+OpenBLAS creates an archive file with:
+
+#+BEGIN_EXAMPLE
+ar -ru ../../../libopenblas_sandybridgep-r0.2.13.a lapacke_cgb_nancheck.o ...
+#+END_EXAMPLE
+
+Then runs a command:
+
+#+BEGIN_EXAMPLE
+ranlib ../../../libopenblas_sandybridgep-r0.2.13.a
+#+END_EXAMPLE
+
+From =man ranlib=:
+
+#+BEGIN_EXAMPLE
+ranlib - generate index to archive.
+#+END_EXAMPLE
+
+The archive file is later turned into a shared object.
