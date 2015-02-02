@@ -97,3 +97,10 @@ ranlib - generate index to archive.
 #+END_EXAMPLE
 
 The archive file is later turned into a shared object.
+
+* Converting =.a= to =.so=
+
+Reference: http://stackoverflow.com/questions/7935421/linking-archives-a-into-shared-object-so
+
+For =gcc= need to use =-Wl,--whole-archive file.a -Wl,--no-whole-archive=
+

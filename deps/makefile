@@ -42,6 +42,10 @@ else
 	$(error "Unsupported operating system")
 endif
 
+# archive tool
+AR := ar
+ARFLAGS := rcs
+
 # c source and object files
 CSRC := $(shell find . -name '*.c')
 COBJ := $(patsubst %.c,%.o,$(filter %.c,$(CSRC)))
@@ -61,8 +65,21 @@ FOBJ := $(patsubst %.f,%.o,$(filter %.f,$(FSRC)))
 %.o : %.f
 	$(FC) $(FFLAGS) -c $< -o $@
 
-$(LIBNAME).$(SHLIB_EXT): $(COBJ) $(FOBJ)
-	$(LD) $(LDFLAGS) -shared $^ -o $@
+# rule to generate arive file
+$(LIBNAME).a: $(COBJ) $(FOBJ)
+	$(AR) $(ARFLAGS) $@ $^
+
+# rename symbols
+$(LIBNAME).a.renamed: $(LIBNAME).a
+	objcopy --redefine-syms objcopy.def $< $@
+
+# rule to create shared object
+$(LIBNAME).$(SHLIB_EXT): $(LIBNAME).a.renamed
+	$(LD) $(LDFLAGS) -shared -o $@ \
+    -Wl,--whole-archive $< \
+    -Wl,--no-whole-archive
+
+#    -Wl,-undefined,suppress \
 
 .PHONY: install
 install: $(LIBNAME).$(SHLIB_EXT)
@@ -71,6 +88,9 @@ install: $(LIBNAME).$(SHLIB_EXT)
 
 .PHONY: clean
 clean:
+	$(RM) $(LIBNAME).a
+	$(RM) $(LIBNAME).a.renamed
 	$(RM) $(LIBNAME).$(SHLIB_EXT)
 	$(RM) $(COBJ) $(FOBJ)
 	$(RM) ./usr/lib/$(LIBNAME).$(SHLIB_EXT)
+	$(RM) -r usr

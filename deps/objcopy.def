@@ -1,0 +1,8 @@
+dgemm_ dgemm_64_
+dpotf2_ dpotf2_64_
+dqdtrf_ dqdtrf_64_
+dsyrk_ dsyrk_64_
+dtrsm_ dtrsm_64_
+ilaenv_ ilaenv_64_
+lsame_ lsame_64_
+xerbla_ xerbla_64_
