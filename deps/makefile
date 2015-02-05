@@ -22,6 +22,9 @@ ifeq ($(OS), Darwin)
   # c compiler
   CC := clang
   CFLAGS := -fPIC
+  # c++ compiler
+  CXX := clang++
+  CXXFLAGS := -O2
   # fortran compiler
   FC := gfortran
   FFLAGS := -fPIC
@@ -32,6 +35,9 @@ else ifeq ($(OS), Linux)
   # c compiler
   CC := gcc
   CFLAGS := -fPIC
+  # c++ compiler
+  CXX := g++
+  CXXFLAGS := -O2
   # fortran compiler
   FC := gfortran
   FFLAGS := -O2 -Wall -m64 -fdefault-integer-8 -fPIC
@@ -65,6 +71,13 @@ FOBJ := $(patsubst %.f,%.o,$(filter %.f,$(FSRC)))
 %.o : %.f
 	$(FC) $(FFLAGS) -c $< -o $@
 
+# rule to download and build objconv
+./objconv:
+	curl -O http://www.agner.org/optimize/objconv.zip
+	unzip -d objconv-dir objconv.zip
+	unzip -d objconv-src objconv-dir/source.zip
+	$(CXX) $(CXXFLAGS) -o objconv objconv-src/*.cpp
+
 # rule to generate arive file
 $(LIBNAME).a: $(COBJ) $(FOBJ)
 	$(AR) $(ARFLAGS) $@ $^
@@ -95,3 +108,6 @@ clean:
 	$(RM) $(COBJ) $(FOBJ)
 	$(RM) ./usr/lib/$(LIBNAME).$(SHLIB_EXT)
 	$(RM) -r usr
+	$(RM) -r objconv-dir
+	$(RM) -r objconv-src
+	$(RM) objconv

@@ -9,3 +9,7 @@
 /deps/dqdtrf.o
 /deps/libQuasiDefinite.a
 /deps/libQuasiDefinite.a.renamed
+/deps/objconv
+/deps/objconv-dir/
+/deps/objconv-src/
+/deps/objconv.zip

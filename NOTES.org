@@ -104,3 +104,40 @@ Reference: http://stackoverflow.com/questions/7935421/linking-archives-a-into-sh
 
 For =gcc= need to use =-Wl,--whole-archive file.a -Wl,--no-whole-archive=
 
+* Build OpenBLAS on Mac
+
+To build and capture output:
+
+#+BEGIN_EXAMPLE
+make SYMBOLSUFFIX=64_ INTERFACE64=1 &> build64.out
+#+END_EXAMPLE
+
+The =objconv= call:
+
+#+BEGIN_EXAMPLE
+objconv @objconv.def ../libopenblas_haswellp-r0.2.13.a ../libopenblas_haswellp-r0.2.13.a.renamed
+#+END_EXAMPLE
+
+=gfortran= call:
+
+#+BEGIN_EXAMPLE
+gfortran -O2 -m128bit-long-double -Wall -m64 -fdefault-integer-8 -fPIC -c sgbbrd.f -o sgbbrd.o
+#+END_EXAMPLE
+
+* =objconv= tool for osx
+
+Website: http://www.agner.org/optimize/#objconv
+
+Download: http://www.agner.org/optimize/objconv.zip
+
+Steps to download and compile:
+
+#+BEGIN_EXAMPLE
+curl -O http://www.agner.org/optimize/objconv.zip
+unzip -d objconv-dir objconv.zip
+unzip -d objconv-src objconv-dir/source.zip
+clang++ -O2 -o objconv objconv-src/*.cpp
+#+END_EXAMPLE
+
+Now the =objconv= tool is available.
+
