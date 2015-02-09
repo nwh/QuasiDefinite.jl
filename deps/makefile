@@ -27,10 +27,10 @@ ifeq ($(OS), Darwin)
   CXXFLAGS := -O2
   # fortran compiler
   FC := gfortran
-  FFLAGS := -fPIC
+  FFLAGS := -O2 -Wall -m64 -fdefault-integer-8 -fPIC
   # linker
   LD := clang
-  LDFLAGS := -framework Accelerate
+  LDFLAGS :=
 else ifeq ($(OS), Linux)
   # c compiler
   CC := gcc
