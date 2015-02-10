@@ -19,6 +19,7 @@ julia> using QuasiDefinite
 
 ```julia
 julia> using QuasiDefinite
-Hello from QuasiDefinite julia code.
-hello from QuasiDefinite c code.
+julia> QuasiDefinite.run()
+[1.4142135623730951 -0.7071067811865475
+ -1.0 1.224744871391589]0
 ```
