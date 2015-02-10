@@ -187,3 +187,24 @@ References:
 - http://stackoverflow.com/questions/3532589/how-to-build-a-dylib-from-several-o-in-mac-os-x-using-gcc
 - https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/CreatingDynamicLibraries.html
 
+* LAPACK: =XERBLA= routine
+
+#+BEGIN_EXAMPLE
+ XERBLA  is an error handler for the LAPACK routines.
+ It is called by an LAPACK routine if an input parameter has an
+ invalid value.  A message is printed and execution stops.
+
+ Installers may consider modifying the STOP statement in order to
+ call system-specific exception-handling facilities.
+#+END_EXAMPLE
+
+Function takes in a string for a warning or error message, we can change the
+string.
+
+* LAPACK: =ILAENV= routine
+
+Returns optimal block size and other parameters for machine.
+
+http://www.netlib.org/lapack/lug/node120.html
+
+Here, we should assume that the block size is the same as DPOTRF.

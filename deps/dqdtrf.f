@@ -1,20 +1,5 @@
 *> \brief \b DQDTRF
 *
-*  =========== DOCUMENTATION ===========
-*
-* Online html documentation available at 
-*            http://www.netlib.org/lapack/explore-html/ 
-*
-*> \htmlonly
-*> Download DQDTRF + dependencies 
-*> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&filename=/lapack/lapack_routine/dqdtrf.f"> 
-*> [TGZ]</a> 
-*> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&filename=/lapack/lapack_routine/dqdtrf.f"> 
-*> [ZIP]</a> 
-*> <a href="http://www.netlib.org/cgi-bin/netlibfiles.txt?format=txt&filename=/lapack/lapack_routine/dqdtrf.f"> 
-*> [TXT]</a>
-*> \endhtmlonly 
-*
 *  Definition:
 *  ===========
 *
@@ -34,8 +19,8 @@
 *>
 *> \verbatim
 *>
-*> DQDTRF computes the Cholesky factorization of a real symmetric
-*> positive definite matrix A.
+*> DQDTRF computes the Cholesky factorization of a real quasi-definite
+*> matrix A.
 *>
 *> The factorization has the form
 *>    A = U**T * U,  if UPLO = 'U', or
@@ -102,7 +87,7 @@
 *
 *> \date November 2011
 *
-*> \ingroup doublePOcomputational
+*> \ingroup doubleQDcomputational
 *
 *  =====================================================================
       SUBROUTINE DQDTRF( UPLO, N, A, LDA, INFO )
@@ -136,7 +121,7 @@
       EXTERNAL           LSAME, ILAENV
 *     ..
 *     .. External Subroutines ..
-      EXTERNAL           DGEMM, DPOTF2, DSYRK, DTRSM, XERBLA
+      EXTERNAL           DGEMM, DQDTF2, DSYRK, DTRSM, XERBLA
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX, MIN
@@ -155,7 +140,7 @@
          INFO = -4
       END IF
       IF( INFO.NE.0 ) THEN
-         CALL XERBLA( 'DPOTRF', -INFO )
+         CALL XERBLA( 'DQDTRF', -INFO )
          RETURN
       END IF
 *
@@ -171,7 +156,7 @@
 *
 *        Use unblocked code.
 *
-         CALL DPOTF2( UPLO, N, A, LDA, INFO )
+         CALL DQDTF2( UPLO, N, A, LDA, INFO )
       ELSE
 *
 *        Use blocked code.
@@ -188,7 +173,7 @@
                JB = MIN( NB, N-J+1 )
                CALL DSYRK( 'Upper', 'Transpose', JB, J-1, -ONE,
      $                     A( 1, J ), LDA, ONE, A( J, J ), LDA )
-               CALL DPOTF2( 'Upper', JB, A( J, J ), LDA, INFO )
+               CALL DQDTF2( 'Upper', JB, A( J, J ), LDA, INFO )
                IF( INFO.NE.0 )
      $            GO TO 30
                IF( J+JB.LE.N ) THEN
@@ -216,7 +201,7 @@
                JB = MIN( NB, N-J+1 )
                CALL DSYRK( 'Lower', 'No transpose', JB, J-1, -ONE,
      $                     A( J, 1 ), LDA, ONE, A( J, J ), LDA )
-               CALL DPOTF2( 'Lower', JB, A( J, J ), LDA, INFO )
+               CALL DQDTF2( 'Lower', JB, A( J, J ), LDA, INFO )
                IF( INFO.NE.0 )
      $            GO TO 30
                IF( J+JB.LE.N ) THEN

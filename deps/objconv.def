@@ -1,6 +1,10 @@
+-nr:_ddot_:_ddot_64_
 -nr:_dgemm_:_dgemm_64_
--nr:_dpotf2_:_dpotf2_64_
+-nr:_dgemv_:_dgemv_64_
+-nr:_disnan_:_disnan_64_
+-nr:_dqdtf2_:_dqdtf2_64_
 -nr:_dqdtrf_:_dqdtrf_64_
+-nr:_dscal_:_dscal_64_
 -nr:_dsyrk_:_dsyrk_64_
 -nr:_dtrsm_:_dtrsm_64_
 -nr:_ilaenv_:_ilaenv_64_
