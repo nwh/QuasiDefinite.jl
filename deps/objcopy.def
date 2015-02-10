@@ -1,6 +1,10 @@
+ddot_ ddot_64_
 dgemm_ dgemm_64_
-dpotf2_ dpotf2_64_
+dgemv_ dgemv_64_
+disnan_ disnan_64_
+dqdtf2_ dqdtf2_64_
 dqdtrf_ dqdtrf_64_
+dscal_ dscal_64_
 dsyrk_ dsyrk_64_
 dtrsm_ dtrsm_64_
 ilaenv_ ilaenv_64_

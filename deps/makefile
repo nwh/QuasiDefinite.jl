@@ -85,7 +85,7 @@ $(LIBNAME).a: $(COBJ) $(FOBJ)
 # rule to rename symbols and create shared object
 ifeq ($(OS), Darwin)
 
-$(LIBNAME).a.renamed: $(LIBNAME).a ./objconv
+$(LIBNAME).a.renamed: $(LIBNAME).a ./objconv objconv.def
 	./objconv @objconv.def $< $@
 	ranlib $@
 
@@ -94,7 +94,7 @@ $(LIBNAME).$(SHLIB_EXT): $(LIBNAME).a.renamed
 
 else ifeq ($(OS), Linux)
 
-$(LIBNAME).a.renamed: $(LIBNAME).a
+$(LIBNAME).a.renamed: $(LIBNAME).a objcopy.def
 	objcopy --redefine-syms objcopy.def $< $@
 	ranlib $@
 
