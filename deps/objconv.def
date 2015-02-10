@@ -1,0 +1,8 @@
+-nr:_dgemm_:_dgemm_64_
+-nr:_dpotf2_:_dpotf2_64_
+-nr:_dqdtrf_:_dqdtrf_64_
+-nr:_dsyrk_:_dsyrk_64_
+-nr:_dtrsm_:_dtrsm_64_
+-nr:_ilaenv_:_ilaenv_64_
+-nr:_lsame_:_lsame_64_
+-nr:_xerbla_:_xerbla_64_

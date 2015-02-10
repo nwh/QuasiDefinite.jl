@@ -29,8 +29,8 @@ ifeq ($(OS), Darwin)
   FC := gfortran
   FFLAGS := -O2 -Wall -m64 -fdefault-integer-8 -fPIC
   # linker
-  LD := clang
-  LDFLAGS :=
+  LD := gfortran
+  LDFLAGS := -all_load -undefined suppress -flat_namespace
 else ifeq ($(OS), Linux)
   # c compiler
   CC := gcc
@@ -82,18 +82,30 @@ FOBJ := $(patsubst %.f,%.o,$(filter %.f,$(FSRC)))
 $(LIBNAME).a: $(COBJ) $(FOBJ)
 	$(AR) $(ARFLAGS) $@ $^
 
-# rename symbols
+# rule to rename symbols and create shared object
+ifeq ($(OS), Darwin)
+
+$(LIBNAME).a.renamed: $(LIBNAME).a ./objconv
+	./objconv @objconv.def $< $@
+	ranlib $@
+
+$(LIBNAME).$(SHLIB_EXT): $(LIBNAME).a.renamed
+	$(LD) $(LDFLAGS) -dynamiclib -o $@ $^
+
+else ifeq ($(OS), Linux)
+
 $(LIBNAME).a.renamed: $(LIBNAME).a
 	objcopy --redefine-syms objcopy.def $< $@
 	ranlib $@
 
-# rule to create shared object
 $(LIBNAME).$(SHLIB_EXT): $(LIBNAME).a.renamed
 	$(LD) $(LDFLAGS) -shared -o $@ \
     -Wl,--whole-archive $< \
     -Wl,--no-whole-archive
 
-#    -Wl,-undefined,suppress \
+else
+	$(error "Unsupported operating system")
+endif
 
 .PHONY: install
 install: $(LIBNAME).$(SHLIB_EXT)
@@ -108,6 +120,14 @@ clean:
 	$(RM) $(COBJ) $(FOBJ)
 	$(RM) ./usr/lib/$(LIBNAME).$(SHLIB_EXT)
 	$(RM) -r usr
+	$(RM) deps.jl
+
+.PHONY: clean-objconv
+clean-objconv:
+	$(RM) objconv.zip
 	$(RM) -r objconv-dir
 	$(RM) -r objconv-src
 	$(RM) objconv
+
+.PHONY: clean-all
+clean-all: clean clean-objconv
