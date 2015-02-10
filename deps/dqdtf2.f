@@ -89,7 +89,7 @@
 *
 *> \date September 2012
 *
-*> \ingroup doublePOcomputational
+*> \ingroup doubleQDcomputational
 *
 *  =====================================================================
       SUBROUTINE DQDTF2( UPLO, N, A, LDA, INFO )
