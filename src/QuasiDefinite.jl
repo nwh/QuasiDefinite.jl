@@ -44,10 +44,6 @@ end
     end
 end
 
-println("Hello from QuasiDefinite julia code.")
-
-ccall((:say_hello,libQuasiDefinite),Void,())
-
 function run()
     A = Float64[2 -1; -1 2]
     B, info = qdtrf!('U',A)
