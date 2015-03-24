@@ -11,4 +11,4 @@ provides(SimpleBuild,
          end),
          libQuasiDefinite)
 
-@BinDeps.install Dict(:libQuasiDefinite => :libQuasiDefinite)
+@BinDeps.install [:libQuasiDefinite => :libQuasiDefinite]
