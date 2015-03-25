@@ -4,7 +4,7 @@
 *  ===========
 *
 *       SUBROUTINE DQDTF2( UPLO, N, A, LDA, INFO )
-* 
+*
 *       .. Scalar Arguments ..
 *       CHARACTER          UPLO
 *       INTEGER            INFO, LDA, N
@@ -12,7 +12,7 @@
 *       .. Array Arguments ..
 *       DOUBLE PRECISION   A( LDA, * )
 *       ..
-*  
+*
 *
 *> \par Purpose:
 *  =============
@@ -82,10 +82,10 @@
 *  Authors:
 *  ========
 *
-*> \author Univ. of Tennessee 
-*> \author Univ. of California Berkeley 
-*> \author Univ. of Colorado Denver 
-*> \author NAG Ltd. 
+*> \author Univ. of Tennessee
+*> \author Univ. of California Berkeley
+*> \author Univ. of Colorado Denver
+*> \author NAG Ltd.
 *
 *> \date September 2012
 *
@@ -186,9 +186,9 @@
 *
             DO 21 K = 1, J-1
                A( K, J ) = A( K, K ) * A( J, K )
-   21       CONTINUE             
-            
-*     
+   21       CONTINUE
+
+*
 *           Compute L(J,J) and test for singularity.
 *
             AJJ = A( J, J ) - DDOT( J-1, A( J, 1 ), LDA, A( 1, J ), 1 )
