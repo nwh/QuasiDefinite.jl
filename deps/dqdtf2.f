@@ -182,22 +182,27 @@
 *
          DO 20 J = 1, N
 *
-*           Compute L(J,J) and test for non-positive-definiteness.
+*           Compute A_{12}
 *
-            AJJ = A( J, J ) - DDOT( J-1, A( J, 1 ), LDA, A( J, 1 ),
-     $            LDA )
-            IF( AJJ.LE.ZERO.OR.DISNAN( AJJ ) ) THEN
-               A( J, J ) = AJJ
+            DO 21 K = 1, J-1
+               A( K, J ) = A( K, K ) * A( J, K )
+   21       CONTINUE             
+            
+*     
+*           Compute L(J,J) and test for singularity.
+*
+            AJJ = A( J, J ) - DDOT( J-1, A( J, 1 ), LDA, A( 1, J ), 1 )
+            A( J, J ) = AJJ
+            IF( AJJ.EQ.ZERO.OR.DISNAN( AJJ ) ) THEN
                GO TO 30
             END IF
-            AJJ = SQRT( AJJ )
-            A( J, J ) = AJJ
+
 *
 *           Compute elements J+1:N of column J.
 *
             IF( J.LT.N ) THEN
                CALL DGEMV( 'No transpose', N-J, J-1, -ONE, A( J+1, 1 ),
-     $                     LDA, A( J, 1 ), LDA, ONE, A( J+1, J ), 1 )
+     $                     LDA, A( 1, J ), 1, ONE, A( J+1, J ), 1 )
                CALL DSCAL( N-J, ONE / AJJ, A( J+1, J ), 1 )
             END IF
    20    CONTINUE
