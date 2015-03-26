@@ -44,11 +44,27 @@ end
     end
 end
 
+@eval begin
+    function qdtf2!(uplo::BlasChar, A::StridedMatrix{Float64})
+        chkstride1(A)
+        chksquare(A)
+        @chkuplo
+        lda = max(1,stride(A,2))
+        lda==0 && return A, 0
+        info = Array(BlasInt, 1)
+        ccall(($(blasfunc(:dqdtf2_)), libQuasiDefinite), Void,
+              (Ptr{BlasChar}, Ptr{BlasInt}, Ptr{Float64}, Ptr{BlasInt}, Ptr{BlasInt}),
+              &uplo, &size(A,1), A, &lda, info)
+        @assertargsok
+        return A, info[1]
+    end
+end
+
 function run()
     A = Float64[2 -1; -1 2]
     B, info = qdtrf!('U',A)
-    show(B)
-    show(info)
+    println(B)
+    println(info)
 end
 
 end # module
