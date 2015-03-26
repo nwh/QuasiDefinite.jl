@@ -1,0 +1,161 @@
+\documentclass[12pt]{article}
+
+\title{$LDL^T$ Notes}
+\author{Nick Henderson}
+\date{\today}
+
+\usepackage{amsmath}
+
+\begin{document}
+\maketitle
+
+\section{$A=LDL^T$}
+
+Overall $LDL^T = A$ factorization:
+
+\begin{equation*}
+\begin{pmatrix}
+L_{11} &        &        \\
+L_{21} & L_{22} &        \\
+L_{31} & L_{32} & L_{33}
+\end{pmatrix}
+\begin{pmatrix}
+D_{11} &        &        \\
+       & D_{22} &        \\
+       &        & D_{33}
+\end{pmatrix}
+\begin{pmatrix}
+L_{11}^T & L_{21}^T & L_{31}^T \\
+         & L_{22}^T & L_{32}^T \\
+         &          & L_{33}^T
+\end{pmatrix}
+= 
+\begin{pmatrix}
+A_{11} & A_{12} & A_{13} \\
+A_{21} & A_{22} & A_{23} \\
+A_{31} & A_{32} & A_{33}
+\end{pmatrix}
+\end{equation*}
+
+Multiply $LD$:
+
+\begin{equation*}
+\begin{pmatrix}
+L_{11} D_{11} &               &              \\
+L_{21} D_{11} & L_{22} D_{22} &              \\
+L_{31} D_{11} & L_{32} D_{22} & L_{33} D_{33}
+\end{pmatrix}
+\begin{pmatrix}
+L_{11}^T & L_{21}^T & L_{31}^T \\
+         & L_{22}^T & L_{32}^T \\
+         &          & L_{33}^T
+\end{pmatrix}
+= 
+\begin{pmatrix}
+A_{11} & A_{12} & A_{13} \\
+A_{21} & A_{22} & A_{23} \\
+A_{31} & A_{32} & A_{33}
+\end{pmatrix}
+\end{equation*}
+
+Equations that focus on $D_{22}$, $L_{22}$, and $L_{32}$:
+
+\begin{align*}
+A_{22} &= L_{21}D_{11}L_{21}^T + L_{22}D_{22}L_{22}^T \\
+A_{32} &= L_{31}D_{11}L_{21}^T + L_{32}D_{22}L_{22}^T
+\end{align*}
+
+Out of place algorithm for when $L_{22}$ is element:
+\begin{align*}
+L_{12} & \gets D_{11}L_{21}^T        & \text{no blas function for this} \\
+D_{22} & \gets A_{22} - L_{21}L_{12} & \texttt{dot} \\
+L_{32} & \gets A_{32} - L_{31}L_{12} & \texttt{gemv} \\
+L_{32} & \gets L_{32} / D_{22}       & \texttt{scal}
+\end{align*}
+
+In place algorithm for when $L_{22}$ is element:
+\begin{align*}
+A_{12} & \gets D_{11}A_{21}^T        & \text{no blas function for this, $D_{11}=\mathsf{diag}(A_{11})$} \\
+A_{22} & \gets A_{22} - A_{21}A_{12} & \texttt{dot} \\
+A_{32} & \gets A_{32} - A_{31}A_{12} & \texttt{gemv} \\
+A_{32} & \gets A_{32} / A_{22}       & \texttt{scal}
+\end{align*}
+
+\section{$A = U^TDU$}
+
+Overall $U^TDU = A$ factorization:
+
+\begin{equation*}
+\begin{pmatrix}
+U_{11}^T &         &        \\
+U_{12}^T & U_{22}^T &        \\
+U_{13}^T & U_{23}^T & U_{33}^T
+\end{pmatrix}
+\begin{pmatrix}
+D_{11} &        &        \\
+       & D_{22} &        \\
+       &        & D_{33}
+\end{pmatrix}
+\begin{pmatrix}
+U_{11} & U_{12} & U_{13} \\
+       & U_{22} & U_{23} \\
+       &        & U_{33}
+\end{pmatrix}
+= 
+\begin{pmatrix}
+A_{11} & A_{12} & A_{13} \\
+A_{21} & A_{22} & A_{23} \\
+A_{31} & A_{32} & A_{33}
+\end{pmatrix}
+\end{equation*}
+
+Multiply $U^TD$:
+
+\begin{equation*}
+\begin{pmatrix}
+U_{11}^TD_{11} &               &              \\
+U_{12}^TD_{11} & U_{22}^TD_{22} &              \\
+U_{13}^TD_{11} & U_{23}^TD_{22} & U_{33}^TD_{33}
+\end{pmatrix}
+\begin{pmatrix}
+U_{11} & U_{12} & U_{13} \\
+       & U_{22} & U_{23} \\
+       &        & U_{33}
+\end{pmatrix}
+= 
+\begin{pmatrix}
+A_{11} & A_{12} & A_{13} \\
+A_{21} & A_{22} & A_{23} \\
+A_{31} & A_{32} & A_{33}
+\end{pmatrix}
+\end{equation*}
+
+Equations that involve $A_{22}$, $U_{22}$, and $U_{23}$:
+
+\begin{align*}
+A_{22} &= U_{12}^TD_{11}U_{12} + U_{22}^TD_{22}U_{22} \\
+A_{23} &= U_{12}^TD_{11}U_{13} + U_{22}^TD_{22}U_{23}
+\end{align*}
+
+Out of place algorithm for when $U_{22}$ is element:
+\begin{align*}
+U_{21} & \gets U_{12}^TD_{11}        & \text{no blas function for this} \\
+D_{22} & \gets A_{22} - U_{21}U_{12} & \texttt{dot} \\
+U_{23} & \gets A_{23} - U_{21}U_{13} & \texttt{gemv} \\
+U_{23} & \gets U_{23} / D_{22}       & \texttt{scal}
+\end{align*}
+
+In place algorithm for when $U_{22}$ is element:
+\begin{align*}
+A_{21} & \gets A_{12}^TD_{11}        & \text{no blas function for this, $D_{11}=\mathsf{diag}(A_{11})$} \\
+D_{22} & \gets A_{22} - A_{21}A_{12} & \texttt{dot} \\
+A_{23} & \gets A_{23} - A_{21}A_{13} & \texttt{gemv} \\
+A_{23} & \gets A_{23} / D_{22}       & \texttt{scal}
+\end{align*}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
