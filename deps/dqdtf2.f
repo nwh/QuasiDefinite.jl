@@ -158,21 +158,26 @@
 *
          DO 10 J = 1, N
 *
-*           Compute U(J,J) and test for non-positive-definiteness.
+*           Compute A_{22}
 *
-            AJJ = A( J, J ) - DDOT( J-1, A( 1, J ), 1, A( 1, J ), 1 )
-            IF( AJJ.LE.ZERO.OR.DISNAN( AJJ ) ) THEN
-               A( J, J ) = AJJ
+            DO 11 K = 1, J-1
+               A( J, K ) = A( K, K ) * A( K, J )
+   11       CONTINUE
+
+*
+*           Compute U(J,J) and test for singularity.
+*
+            AJJ = A( J, J ) - DDOT( J-1, A( J, 1 ), LDA, A( 1, J ), 1 )
+            A( J, J ) = AJJ
+            IF( AJJ.EQ.ZERO.OR.DISNAN( AJJ ) ) THEN
                GO TO 30
             END IF
-            AJJ = SQRT( AJJ )
-            A( J, J ) = AJJ
 *
 *           Compute elements J+1:N of row J.
 *
             IF( J.LT.N ) THEN
                CALL DGEMV( 'Transpose', J-1, N-J, -ONE, A( 1, J+1 ),
-     $                     LDA, A( 1, J ), 1, ONE, A( J, J+1 ), LDA )
+     $                     LDA, A( J, 1 ), LDA, ONE, A( J, J+1 ), LDA )
                CALL DSCAL( N-J, ONE / AJJ, A( J, J+1 ), LDA )
             END IF
    10    CONTINUE
