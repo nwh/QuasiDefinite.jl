@@ -83,9 +83,9 @@
 *> \date March 2015
 *
 *  =====================================================================
-      SUBROUTINE DNPTF2( M, N, A, LDA, IPIV, INFO )
+      SUBROUTINE DNPTF2( M, N, A, LDA, INFO )
 *
-*  -- LAPACK computational routine (version 3.4.2) --
+*  -- Modified LAPACK computational routine (version 3.4.2) --
 *  -- LAPACK is a software package provided by Univ. of Tennessee,    --
 *  -- Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd..--
 *     September 2012
@@ -94,7 +94,6 @@
       INTEGER            INFO, LDA, M, N
 *     ..
 *     .. Array Arguments ..
-      INTEGER            IPIV( * )
       DOUBLE PRECISION   A( LDA, * )
 *     ..
 *
@@ -106,15 +105,14 @@
 *     ..
 *     .. Local Scalars ..
       DOUBLE PRECISION   SFMIN 
-      INTEGER            I, J, JP
+      INTEGER            I, J
 *     ..
 *     .. External Functions ..
       DOUBLE PRECISION   DLAMCH      
-      INTEGER            IDAMAX
-      EXTERNAL           DLAMCH, IDAMAX
+      EXTERNAL           DLAMCH
 *     ..
 *     .. External Subroutines ..
-      EXTERNAL           DGER, DSCAL, DSWAP, XERBLA
+      EXTERNAL           DGER, DSCAL, XERBLA
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX, MIN
@@ -147,16 +145,9 @@
 *
       DO 10 J = 1, MIN( M, N )
 *
-*        Find pivot and test for singularity.
+*        Test for singularity.
 *
-         JP = J - 1 + IDAMAX( M-J+1, A( J, J ), 1 )
-         IPIV( J ) = JP
-         IF( A( JP, J ).NE.ZERO ) THEN
-*
-*           Apply the interchange to columns 1:N.
-*
-            IF( JP.NE.J )
-     $         CALL DSWAP( N, A( J, 1 ), LDA, A( JP, 1 ), LDA )
+         IF( A( J, J ).NE.ZERO ) THEN
 *
 *           Compute elements J+1:M of J-th column.
 *
