@@ -9,6 +9,29 @@
 \begin{document}
 \maketitle
 
+\section{Cholesky: $A=LL^T$}
+
+Overall $LDL^T = A$ factorization:
+
+\begin{equation*}
+\begin{pmatrix}
+L_{11} &        &        \\
+L_{21} & L_{22} &        \\
+L_{31} & L_{32} & L_{33}
+\end{pmatrix}
+\begin{pmatrix}
+L_{11}^T & L_{21}^T & L_{31}^T \\
+         & L_{22}^T & L_{32}^T \\
+         &          & L_{33}^T
+\end{pmatrix}
+= 
+\begin{pmatrix}
+A_{11} & A_{12} & A_{13} \\
+A_{21} & A_{22} & A_{23} \\
+A_{31} & A_{32} & A_{33}
+\end{pmatrix}
+\end{equation*}
+
 \section{$A=LDL^T$}
 
 Overall $LDL^T = A$ factorization:
