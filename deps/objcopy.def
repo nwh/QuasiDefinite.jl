@@ -1,7 +1,11 @@
 ddot_ ddot_64_
 dgemm_ dgemm_64_
 dgemv_ dgemv_64_
+dger_ dger_64_
 disnan_ disnan_64_
+dlamch_ dlamch_64_
+dnptf2_ dnptf2_64_
+dnptrf_ dnptrf_64_
 dqdtf2_ dqdtf2_64_
 dqdtrf_ dqdtrf_64_
 dscal_ dscal_64_

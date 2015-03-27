@@ -1,7 +1,11 @@
 -nr:_ddot_:_ddot_64_
 -nr:_dgemm_:_dgemm_64_
 -nr:_dgemv_:_dgemv_64_
+-nr:_dger_:_dger_64_
 -nr:_disnan_:_disnan_64_
+-nr:_dlamch_:_dlamch_64_
+-nr:_dnptf2_:_dnptf2_64_
+-nr:_dnptrf_:_dnptrf_64_
 -nr:_dqdtf2_:_dqdtf2_64_
 -nr:_dqdtrf_:_dqdtrf_64_
 -nr:_dscal_:_dscal_64_
