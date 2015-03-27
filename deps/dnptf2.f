@@ -6,14 +6,14 @@
 *  ===========
 *
 *       SUBROUTINE DNPTF2( M, N, A, LDA, INFO )
-* 
+*
 *       .. Scalar Arguments ..
 *       INTEGER            INFO, LDA, M, N
 *       ..
 *       .. Array Arguments ..
 *       DOUBLE PRECISION   A( LDA, * )
 *       ..
-*  
+*
 *
 *> \par Purpose:
 *  =============
@@ -75,11 +75,11 @@
 *  Authors:
 *  ========
 *
-*> \author Univ. of Tennessee 
-*> \author Univ. of California Berkeley 
-*> \author Univ. of Colorado Denver 
-*> \author NAG Ltd. 
-*     
+*> \author Univ. of Tennessee
+*> \author Univ. of California Berkeley
+*> \author Univ. of Colorado Denver
+*> \author NAG Ltd.
+*
 *> \date March 2015
 *
 *  =====================================================================
@@ -104,11 +104,12 @@
       PARAMETER          ( ONE = 1.0D+0, ZERO = 0.0D+0 )
 *     ..
 *     .. Local Scalars ..
-      DOUBLE PRECISION   SFMIN 
+      DOUBLE PRECISION   SFMIN, AJJ
       INTEGER            I, J
 *     ..
 *     .. External Functions ..
-      DOUBLE PRECISION   DLAMCH      
+      LOGICAL            DISNAN
+      DOUBLE PRECISION   DLAMCH
       EXTERNAL           DLAMCH
 *     ..
 *     .. External Subroutines ..
@@ -139,31 +140,29 @@
       IF( M.EQ.0 .OR. N.EQ.0 )
      $   RETURN
 *
-*     Compute machine safe minimum 
-* 
-      SFMIN = DLAMCH('S')  
+*     Compute machine safe minimum
+*
+      SFMIN = DLAMCH('S')
 *
       DO 10 J = 1, MIN( M, N )
 *
 *        Test for singularity.
 *
-         IF( A( J, J ).NE.ZERO ) THEN
+         AJJ = A( J, J )
+         IF( AJJ.EQ.ZERO.OR.DISNAN( AJJ ) ) THEN
+            GO TO 30
+         END IF
 *
-*           Compute elements J+1:M of J-th column.
+*        Compute elements J+1:M of J-th column.
 *
-            IF( J.LT.M ) THEN 
-               IF( ABS(A( J, J )) .GE. SFMIN ) THEN 
-                  CALL DSCAL( M-J, ONE / A( J, J ), A( J+1, J ), 1 ) 
-               ELSE 
-                 DO 20 I = 1, M-J 
-                    A( J+I, J ) = A( J+I, J ) / A( J, J ) 
-   20            CONTINUE 
-               END IF 
-            END IF 
-*
-         ELSE IF( INFO.EQ.0 ) THEN
-*
-            INFO = J
+         IF( J.LT.M ) THEN
+            IF( ABS( AJJ ) .GE. SFMIN ) THEN
+               CALL DSCAL( M-J, ONE / AJJ, A( J+1, J ), 1 )
+            ELSE
+               DO 20 I = 1, M-J
+                  A( J+I, J ) = A( J+I, J ) / AJJ
+   20          CONTINUE
+            END IF
          END IF
 *
          IF( J.LT.MIN( M, N ) ) THEN
@@ -174,6 +173,10 @@
      $                 A( J+1, J+1 ), LDA )
          END IF
    10 CONTINUE
+      GO TO 40
+   30 CONTINUE
+      INFO = J
+   40 CONTINUE
       RETURN
 *
 *     End of DNPTF2
