@@ -1,30 +1,16 @@
-*> \brief \b DGETF2 computes the LU factorization of a general m-by-n matrix using partial pivoting with row interchanges (unblocked algorithm).
+*> \brief \b DNPTF2 computes the LU factorization of a general m-by-n matrix using partial pivoting with row interchanges (unblocked algorithm).
 *
 *  =========== DOCUMENTATION ===========
-*
-* Online html documentation available at 
-*            http://www.netlib.org/lapack/explore-html/ 
-*
-*> \htmlonly
-*> Download DGETF2 + dependencies 
-*> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&filename=/lapack/lapack_routine/dgetf2.f"> 
-*> [TGZ]</a> 
-*> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&filename=/lapack/lapack_routine/dgetf2.f"> 
-*> [ZIP]</a> 
-*> <a href="http://www.netlib.org/cgi-bin/netlibfiles.txt?format=txt&filename=/lapack/lapack_routine/dgetf2.f"> 
-*> [TXT]</a>
-*> \endhtmlonly 
 *
 *  Definition:
 *  ===========
 *
-*       SUBROUTINE DGETF2( M, N, A, LDA, IPIV, INFO )
+*       SUBROUTINE DNPTF2( M, N, A, LDA, INFO )
 * 
 *       .. Scalar Arguments ..
 *       INTEGER            INFO, LDA, M, N
 *       ..
 *       .. Array Arguments ..
-*       INTEGER            IPIV( * )
 *       DOUBLE PRECISION   A( LDA, * )
 *       ..
 *  
@@ -34,14 +20,14 @@
 *>
 *> \verbatim
 *>
-*> DGETF2 computes an LU factorization of a general m-by-n matrix A
-*> using partial pivoting with row interchanges.
+*> DNPTF2 computes an LU factorization of a general m-by-n matrix A
+*> without pivoting.
 *>
 *> The factorization has the form
-*>    A = P * L * U
-*> where P is a permutation matrix, L is lower triangular with unit
-*> diagonal elements (lower trapezoidal if m > n), and U is upper
-*> triangular (upper trapezoidal if m < n).
+*>    A = L * U
+*> where L is lower triangular with unit diagonal elements (lower
+*> trapezoidal if m > n), and U is upper triangular (upper trapezoidal if
+*> m < n).
 *>
 *> This is the right-looking Level 2 BLAS version of the algorithm.
 *> \endverbatim
@@ -66,20 +52,13 @@
 *>          A is DOUBLE PRECISION array, dimension (LDA,N)
 *>          On entry, the m by n matrix to be factored.
 *>          On exit, the factors L and U from the factorization
-*>          A = P*L*U; the unit diagonal elements of L are not stored.
+*>          A = L*U; the unit diagonal elements of L are not stored.
 *> \endverbatim
 *>
 *> \param[in] LDA
 *> \verbatim
 *>          LDA is INTEGER
 *>          The leading dimension of the array A.  LDA >= max(1,M).
-*> \endverbatim
-*>
-*> \param[out] IPIV
-*> \verbatim
-*>          IPIV is INTEGER array, dimension (min(M,N))
-*>          The pivot indices; for 1 <= i <= min(M,N), row i of the
-*>          matrix was interchanged with row IPIV(i).
 *> \endverbatim
 *>
 *> \param[out] INFO
@@ -100,13 +79,11 @@
 *> \author Univ. of California Berkeley 
 *> \author Univ. of Colorado Denver 
 *> \author NAG Ltd. 
-*
-*> \date September 2012
-*
-*> \ingroup doubleGEcomputational
+*     
+*> \date March 2015
 *
 *  =====================================================================
-      SUBROUTINE DGETF2( M, N, A, LDA, IPIV, INFO )
+      SUBROUTINE DNPTF2( M, N, A, LDA, IPIV, INFO )
 *
 *  -- LAPACK computational routine (version 3.4.2) --
 *  -- LAPACK is a software package provided by Univ. of Tennessee,    --
@@ -208,6 +185,6 @@
    10 CONTINUE
       RETURN
 *
-*     End of DGETF2
+*     End of DNPTF2
 *
       END
