@@ -94,7 +94,6 @@
       INTEGER            INFO, LDA, M, N
 *     ..
 *     .. Array Arguments ..
-      INTEGER            IPIV( * )
       DOUBLE PRECISION   A( LDA, * )
 *     ..
 *
@@ -105,10 +104,10 @@
       PARAMETER          ( ONE = 1.0D+0 )
 *     ..
 *     .. Local Scalars ..
-      INTEGER            I, IINFO, J, JB, NB
+      INTEGER            J, JB, NB
 *     ..
 *     .. External Subroutines ..
-      EXTERNAL           DGEMM, DGETF2, DLASWP, DTRSM, XERBLA
+      EXTERNAL           DGEMM, DGETF2, DTRSM, XERBLA
 *     ..
 *     .. External Functions ..
       INTEGER            ILAENV
@@ -146,7 +145,7 @@
 *
 *        Use unblocked code.
 *
-         CALL DGETF2( M, N, A, LDA, IPIV, INFO )
+         CALL DNPTF2( M, N, A, LDA, IPIV, INFO )
       ELSE
 *
 *        Use blocked code.
@@ -157,26 +156,14 @@
 *           Factor diagonal and subdiagonal blocks and test for exact
 *           singularity.
 *
-            CALL DGETF2( M-J+1, JB, A( J, J ), LDA, IPIV( J ), IINFO )
+            CALL DNPTF2( M-J+1, JB, A( J, J ), LDA, INFO )
 *
-*           Adjust INFO and the pivot indices.
+*           Check for exact singularity
 *
-            IF( INFO.EQ.0 .AND. IINFO.GT.0 )
-     $         INFO = IINFO + J - 1
-            DO 10 I = J, MIN( M, J+JB-1 )
-               IPIV( I ) = J - 1 + IPIV( I )
-   10       CONTINUE
-*
-*           Apply interchanges to columns 1:J-1.
-*
-            CALL DLASWP( J-1, A, LDA, J, J+JB-1, IPIV, 1 )
+            IF( INFO.NE.0 )
+     $         GO TO 30
 *
             IF( J+JB.LE.N ) THEN
-*
-*              Apply interchanges to columns J+JB:N.
-*
-               CALL DLASWP( N-J-JB+1, A( 1, J+JB ), LDA, J, J+JB-1,
-     $                      IPIV, 1 )
 *
 *              Compute block row of U.
 *
@@ -195,6 +182,12 @@
             END IF
    20    CONTINUE
       END IF
+      GO TO 40
+      
+   30 CONTINUE
+      INFO = INFO + J - 1
+
+   40 CONTINUE
       RETURN
 *
 *     End of DNPTRF
