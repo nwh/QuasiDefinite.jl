@@ -1,30 +1,16 @@
-*> \brief \b DGETRF
+*> \brief \b DNPTRF
 *
 *  =========== DOCUMENTATION ===========
-*
-* Online html documentation available at 
-*            http://www.netlib.org/lapack/explore-html/ 
-*
-*> \htmlonly
-*> Download DGETRF + dependencies 
-*> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&filename=/lapack/lapack_routine/dgetrf.f"> 
-*> [TGZ]</a> 
-*> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&filename=/lapack/lapack_routine/dgetrf.f"> 
-*> [ZIP]</a> 
-*> <a href="http://www.netlib.org/cgi-bin/netlibfiles.txt?format=txt&filename=/lapack/lapack_routine/dgetrf.f"> 
-*> [TXT]</a>
-*> \endhtmlonly 
 *
 *  Definition:
 *  ===========
 *
-*       SUBROUTINE DGETRF( M, N, A, LDA, IPIV, INFO )
+*       SUBROUTINE DNPTRF( M, N, A, LDA, INFO )
 * 
 *       .. Scalar Arguments ..
 *       INTEGER            INFO, LDA, M, N
 *       ..
 *       .. Array Arguments ..
-*       INTEGER            IPIV( * )
 *       DOUBLE PRECISION   A( LDA, * )
 *       ..
 *  
@@ -34,14 +20,14 @@
 *>
 *> \verbatim
 *>
-*> DGETRF computes an LU factorization of a general M-by-N matrix A
-*> using partial pivoting with row interchanges.
+*> DNPTRF computes an LU factorization of a general M-by-N matrix A
+*> without pivoting.
 *>
 *> The factorization has the form
-*>    A = P * L * U
-*> where P is a permutation matrix, L is lower triangular with unit
-*> diagonal elements (lower trapezoidal if m > n), and U is upper
-*> triangular (upper trapezoidal if m < n).
+*>    A = L * U
+*> where L is lower triangular with unit diagonal elements (lower
+*> trapezoidal if m > n), and U is upper triangular (upper trapezoidal if
+*> m < n).
 *>
 *> This is the right-looking Level 3 BLAS version of the algorithm.
 *> \endverbatim
@@ -66,20 +52,13 @@
 *>          A is DOUBLE PRECISION array, dimension (LDA,N)
 *>          On entry, the M-by-N matrix to be factored.
 *>          On exit, the factors L and U from the factorization
-*>          A = P*L*U; the unit diagonal elements of L are not stored.
+*>          A = L*U; the unit diagonal elements of L are not stored.
 *> \endverbatim
 *>
 *> \param[in] LDA
 *> \verbatim
 *>          LDA is INTEGER
 *>          The leading dimension of the array A.  LDA >= max(1,M).
-*> \endverbatim
-*>
-*> \param[out] IPIV
-*> \verbatim
-*>          IPIV is INTEGER array, dimension (min(M,N))
-*>          The pivot indices; for 1 <= i <= min(M,N), row i of the
-*>          matrix was interchanged with row IPIV(i).
 *> \endverbatim
 *>
 *> \param[out] INFO
@@ -103,12 +82,10 @@
 *
 *> \date November 2011
 *
-*> \ingroup doubleGEcomputational
-*
 *  =====================================================================
-      SUBROUTINE DGETRF( M, N, A, LDA, IPIV, INFO )
+      SUBROUTINE DNPTRF( M, N, A, LDA, IPIV, INFO )
 *
-*  -- LAPACK computational routine (version 3.4.0) --
+*  -- Modified LAPACK computational routine (version 3.4.0) --
 *  -- LAPACK is a software package provided by Univ. of Tennessee,    --
 *  -- Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd..--
 *     November 2011
@@ -220,6 +197,6 @@
       END IF
       RETURN
 *
-*     End of DGETRF
+*     End of DNPTRF
 *
       END
