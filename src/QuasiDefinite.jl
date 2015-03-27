@@ -60,6 +60,20 @@ end
     end
 end
 
+@eval begin
+    function nptf2!(A::StridedMatrix{Float64})
+        chkstride1(A)
+        lda = max(1,stride(A,2))
+        lda==0 && return A, 0
+        info = Array(BlasInt, 1)
+        ccall(($(blasfunc(:dnptf2_)), libQuasiDefinite), Void,
+              (Ptr{BlasInt}, Ptr{BlasInt}, Ptr{Float64}, Ptr{BlasInt}, Ptr{BlasInt}),
+              &size(A,1), &size(A,2), A, &lda, info)
+        @assertargsok
+        return A, info[1]
+    end
+end
+
 function run()
     A = Float64[2 -1; -1 2]
     B, info = qdtrf!('U',A)
